@@ -1,0 +1,15 @@
+2d7c77dbde3e908942508c6600e2955b *DESCRIPTION
+c3a4b0a4c96651c127d7bc87ed78f4fb *NAMESPACE
+c28008c7d24a6dfe614a79716df134e5 *R/NNIMS.R
+9439c352e56bdacd84c93500bea9fa1d *R/NNMI.R
+b41f31d5eaedf6d8b448573998fe23da *R/class.nnmi.R
+8af6052715a5e41586cdf3d4e3d77943 *R/kmpool.R
+3819291797f0cdf5d3ff8ed892aadbee *R/plotKM.R
+6bce1a22933693b6a64c9804b4ab3290 *R/pool.R
+9532606e8dc9a1f8a6e3661b2cc05d5a *R/print.nnmi.R
+b19fa93a3df96f7fb4700ce4cf6dbebd *man/NNMIS.Rd
+cc21c14ed5bda29303f60ec2de3a1abb *man/coxph.pool.Rd
+e10f101cd234dc96e4c984917a214c14 *man/km.pool.Rd
+43895fa2a79b58101d2726f207a5100a *man/nnmi.Rd
+8628f65f1bcaef3ca68f9480e8e90090 *man/plotKM.Rd
+675f444c9a35c52b0b4b35f6d67ec58a *man/print.nnmi.Rd
