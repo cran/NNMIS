@@ -1,7 +1,6 @@
 # basic function
 
-NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w2 = 0.2,
-                  imputeCT = FALSE, NN.t=10, mfamily = NULL, datalevels = NULL, xc = NULL, Seed=NA)
+NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w2 = 0.2, imputeCT = FALSE, NN.t=10, mfamily = NULL, datalevels = NULL, xc = NULL, Seed=NA)
 {
   #require(survival)
 
@@ -97,7 +96,7 @@ NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w
     if(sum(is.na(fit.mx1$coefficients))>0) stop('Predictors are linearly dependent.')
 
     ps.mx1 <- as.numeric(XXb.B %*% as.matrix(fit.mx1$coef))
-    ps.mx1.c <- (ps.mx1-mean(ps.mx1))/stats::var(ps.mx1)^0.5
+    ps.mx1.c <- c((ps.mx1-mean(ps.mx1))/stats::var(ps.mx1)^0.5)
 
 
     #NNMI X1 missing outcome model
@@ -105,7 +104,7 @@ NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w
 
       fit.x1.nnmi <- stats::glm(X1.B[M1.B==1] ~ XXa.B[M1.B==1,] - 1, family = mfamily)
       ps.x1 <- as.numeric(XXa.B %*% as.matrix(fit.x1.nnmi$coef))
-      ps.x1.c <- (ps.x1-mean(ps.x1))/stats::var(ps.x1)^0.5   # standardized
+      ps.x1.c <- c((ps.x1-mean(ps.x1))/stats::var(ps.x1)^0.5)   # standardized
 
     # impute missing values
       for(i in 1:N.m){ # by individual
@@ -115,9 +114,9 @@ NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w
         if(M1[ID.i]==1){ # double check missingness
 
           #X1 NNMI
-          ps.x1.c.i <- as.vector((XXa[ID.i,]%*%as.matrix(fit.x1.nnmi$coef)-mean(ps.x1))/stats::var(ps.x1)^0.5)
-          ps.mx1.c.i <- as.vector((XXb[ID.i,]%*%as.matrix(fit.mx1$coef)-mean(ps.mx1))/stats::var(ps.mx1)^0.5)
-          rs.x1 <- w1 * (ps.x1.c - ps.x1.c.i)^2 + w2 * (ps.mx1.c - ps.mx1.c.i)^2
+          ps.x1.c.i <- c((XXa[ID.i,]%*%as.matrix(fit.x1.nnmi$coef)-mean(ps.x1))/stats::var(ps.x1)^0.5)
+          ps.mx1.c.i <- c((XXb[ID.i,]%*%as.matrix(fit.mx1$coef)-mean(ps.mx1))/stats::var(ps.mx1)^0.5)
+          rs.x1 <- w1 * (ps.x1.c-ps.x1.c.i)^2 + w2 * (ps.mx1.c-ps.mx1.c.i)^2
           M1.s <- M1.B[order(rank(rs.x1))]
           X1.s <- X1.B[order(rank(rs.x1))]
           X1.s.o <- X1.s[M1.s == 1]
@@ -143,7 +142,7 @@ NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w
 
         fit.x1.nnmi[[j]] <- stats::glm(X1.B1[M1.B==1] ~ XXa.B[M1.B==1,] - 1, family = 'binomial')
         ps.x1[[j]] <- as.numeric(XXa.B %*% as.matrix(fit.x1.nnmi[[j]]$coef))
-        ps.x1.c[[j]] <- (ps.x1[[j]]-mean(ps.x1[[j]]))/stats::var(ps.x1[[j]])^0.5
+        ps.x1.c[[j]] <- c((ps.x1[[j]]-mean(ps.x1[[j]]))/stats::var(ps.x1[[j]])^0.5)
 
       }
         # impute missing values
@@ -159,13 +158,13 @@ NNMI <- function (y, xa=NULL, xb=NULL, time, event, MI = 10, NN = 5, w1 = 0.8, w
 
             for(l in 1:nn){
 
-              ps.x1.c.i[l] <- (XXa[ID.i,]%*%as.matrix(fit.x1.nnmi[[l]]$coef)-mean(ps.x1[[l]]))/stats::var(ps.x1[[l]])^0.5
+              ps.x1.c.i[l] <- c((XXa[ID.i,]%*%as.matrix(fit.x1.nnmi[[l]]$coef)-mean(ps.x1[[l]]))/stats::var(ps.x1[[l]])^0.5)
 
               rs.w1[,l] <- (ps.x1.c[[l]]-ps.x1.c.i[l])^2
 
             }
 
-            ps.mx1.c.i <- as.vector((XXb[ID.i,]%*%as.matrix(fit.mx1$coef)-mean(ps.mx1))/stats::var(ps.mx1)^0.5)
+            ps.mx1.c.i <- c((XXb[ID.i,]%*%as.matrix(fit.mx1$coef)-mean(ps.mx1))/stats::var(ps.mx1)^0.5)
             rs.x1 <- w1 * rowMeans(rs.w1) + w2 * (ps.mx1.c-ps.mx1.c.i)^2
             M1.s <- M1.B[order(rank(rs.x1))]
             X1.s <- X1.B[order(rank(rs.x1))]

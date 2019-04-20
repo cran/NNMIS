@@ -28,18 +28,14 @@
 #' attach(stanford2)
 #'
 #' # performance multiple imputation on missing covariate t5
-#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, Seed = 1234)
+#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, Seed = 2016)
 #'
-#' # this program can impute survival times for censored observations based
-#' # on the imputed missing covariate values
-#' 
-#' \dontrun{
-#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=TRUE, Seed = 1234)
-#' #check imputation results
-#' head(imp.dat$dat.NNMI)    # imputed missing covariate values
-#' head(imp.dat$dat.T.NNMI)  # imputed survival times
-#' head(imp.dat$dat.Id.NNMI) # censoring indicator
-#' }
+#' # this program can impute censoring time based on the imputed missing covariate
+#' # imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=T, Seed = 2016)
+#' # check imputation results
+#' # head(imp.dat$dat.NNMI)    #> missing covariates
+#' # head(imp.dat$dat.T.NNMI)  #> censoring time
+#' # head(imp.dat$dat.Id.NNMI) #> censoring indicator
 #'
 #' # check imputation results
 #' head(imp.dat$dat.NNMI)

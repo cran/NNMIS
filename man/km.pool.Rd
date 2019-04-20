@@ -32,7 +32,7 @@ attach(stanford2)
 
 # performance multiple imputation on missing covariate t5 and
 # censored observations based on the imputed missing covariates
-imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=TRUE, Seed = 1234)
+imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=TRUE, Seed = 2016)
 
 # check imputation results
 head(imp.dat$dat.T.NNMI)

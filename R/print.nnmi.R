@@ -1,26 +1,7 @@
 #' Print function for object of 'nnmi' class.
-#' 
-#' @description print basic information for an object of class 'nnmi'
 #'
 #' @param x a 'nnmi' object
 #' @param ... further arguments passed to function
-#' 
-#' 
-#' @examples
-#' # load required packages
-#' library(NNMIS)
-#' library(survival)
-#'
-#' # load data set - stanford2 in package 'survival'
-#' data("stanford2")
-#' head(stanford2)
-#' attach(stanford2)
-#'
-#' # performance multiple imputation on missing covariate t5
-#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, Seed = 1234, mc.core=1)
-#' 
-#' # print
-#' imp.dat
 #'
 #' @export
 

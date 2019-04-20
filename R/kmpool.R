@@ -22,7 +22,7 @@
 #'
 #' # performance multiple imputation on missing covariate t5 and
 #' # censored observations based on the imputed missing covariates
-#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=TRUE, Seed = 1234)
+#' imp.dat <- NNMIS(t5, xa=age, xb=age, time=time, event=status, imputeCT=TRUE, Seed = 2016)
 #'
 #' # check imputation results
 #' head(imp.dat$dat.T.NNMI)
@@ -78,14 +78,17 @@ km.pool <- function(obj, time, status) {
   B <- apply(coefs,1,Bfun)
 
   Timp <- w + (1+1/MI)*B
+  
+  r.M <- (1+1/MI)*B/w
+  v <- (MI-1)*(1+1/r.M)^2
+ 
+  res <- data.frame(cbind(time=time.point, surv=coef.imp, std.err=sqrt(Timp)))
 
-  res <- data.frame(cbind(time=time.point, survival=coef.imp, std.err=sqrt(Timp)))
+  res$lower <- apply(res[,2:3],1,function(x){lci <- x[1]-stats::qt(0.975,v)*x[2]; return(max(0,lci))})
+  res$upper <- apply(res[,2:3],1,function(x){uci <- x[1]+stats::qt(0.975,v)*x[2]; return(min(1,uci))})
 
-  res$lower.95CI <- apply(res[,2:3],1,function(x){lci <- x[1]-stats::pnorm(0.975)*x[2]; return(max(0,lci))})
-  res$upper.95CI <- apply(res[,2:3],1,function(x){uci <- x[1]+stats::pnorm(0.975)*x[2]; return(min(1,uci))})
-
-  names(res) <- c("time","survival", "std.err", "lower 95% CI", "upper 95% CI")
-
+  names(res) <- c("time","surv", "std.err", "lower", "upper")
+  
   return(res)
 }
 
